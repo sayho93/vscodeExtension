@@ -1,7 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import NetUtil from './api/NetUtil'
+import NetUtil from './api/NetUtil';
+import Utils from './utils/utils';
+
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -22,7 +24,11 @@ export function activate(context: vscode.ExtensionContext) {
 		const editor = vscode.window.activeTextEditor
 		const text = editor?.document.getText()
 		console.log(text)
-		await NetUtil.getCharacters().then(info => console.log(info))
+		// await NetUtil.login("test", "test").then(info => console.log(info))
+		const retData = await NetUtil.test(text)
+		console.log(retData.data)
+		vscode.window.showInformationMessage(retData.data);
+		
 	});
 
 	context.subscriptions.push(disposable);

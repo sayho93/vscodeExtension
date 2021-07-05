@@ -1,9 +1,23 @@
 import axios from 'axios'
+import { URLSearchParams } from 'url'
 import Configs from '../constants/Configs'
 
 const NetUtil = {
-    test: () => {
-        console.log('test')
+    test: (code) => {
+        return new Promise(async (resolve, reject) => {
+            console.log(Configs.API_TEST)
+            let params = new URLSearchParams()
+            params.append('data', code) 
+            console.log(params)
+            axios
+                .post(Configs.API_TEST, params)
+                .then(res => {
+                    resolve(res.data)
+                })
+                .catch(err => {
+                    reject(new Error(err))
+                })
+        })
     },
     login: (email, pw) => {
         return new Promise(async (resolve, reject) => {
