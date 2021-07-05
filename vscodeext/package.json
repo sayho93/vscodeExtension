@@ -18,6 +18,18 @@
       {
         "command": "vscodeext.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "vscodeext.compileJava",
+        "title": "Compile java"
+      },
+      {
+        "command": "vscodeext.compileCpp",
+        "title": "Compile C++"
+      },
+      {
+        "command": "vscodeext.compilePython",
+        "title": "Compile Python"
       }
     ]
   },

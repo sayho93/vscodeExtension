@@ -20,18 +20,52 @@ export function activate(context: vscode.ExtensionContext) {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from vscodeExt!');
+	});
+	context.subscriptions.push(disposable);
 
+	let compileJava = vscode.commands.registerCommand('vscodeext.compileJava', async () => {
+		vscode.window.showInformationMessage('Compiling Java...');
 		const editor = vscode.window.activeTextEditor
 		const text = editor?.document.getText()
 		console.log(text)
 		// await NetUtil.login("test", "test").then(info => console.log(info))
-		const retData = await NetUtil.test(text)
-		console.log(retData.data)
-		vscode.window.showInformationMessage(retData.data);
-		
-	});
+		NetUtil.test(text, 'java')
+			.then(retData => {
+				console.log(retData.data)
+				vscode.window.showInformationMessage(retData.data);
+			})
+			.catch(err => console.error(err))
+	})
+	context.subscriptions.push(compileJava);
 
-	context.subscriptions.push(disposable);
+	let compileCpp = vscode.commands.registerCommand('vscodeext.compileCpp', async () => {
+		vscode.window.showInformationMessage('Compiling C++...');
+		const editor = vscode.window.activeTextEditor
+		const text = editor?.document.getText()
+		console.log(text)
+
+		NetUtil.test(text, 'cpp')
+			.then(retData => {
+				console.log(retData.data)
+				vscode.window.showInformationMessage(retData.data);
+			})
+			.catch(err => console.error(err))
+	})
+	context.subscriptions.push(compileCpp);
+
+	let compilePython = vscode.commands.registerCommand('vscodeext.compilePython', () => {
+		vscode.window.showInformationMessage('Compiling Python...');
+		const editor = vscode.window.activeTextEditor
+		const text = editor?.document.getText()
+		console.log(text)
+
+		NetUtil.test(text, 'python')
+			.then(retData => {
+				console.log(retData.data)
+				vscode.window.showInformationMessage(retData.data);
+			})
+			.catch(err => console.error(err))
+	})
 }
 
 // this method is called when your extension is deactivated

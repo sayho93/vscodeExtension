@@ -1,6 +1,6 @@
 class Configs {
-    API_TEST = 'http://193.122.100.94:5000/api/test/analysis'
-    // API_TEST = 'http://localhost:5000/api/test/analysis'
+    // API_TEST = 'http://193.122.100.94:5000/api/test/analysis'
+    API_TEST = 'http://localhost:5000/api/test/analysis'
 
     API_UPLOAD_FILE_NOBASE = 'route.php?F=Routable.uploadFile.raw'
     APP_ID = 23
