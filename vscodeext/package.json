@@ -10,7 +10,10 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscodeext.helloWorld"
+    "onCommand:vscodeext.helloWorld",
+    "onCommand:vscodeext.compileJava",
+    "onCommand:vscodeext.compileCpp",
+    "onCommand:vscodeext.compilePython"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -31,7 +34,20 @@
         "command": "vscodeext.compilePython",
         "title": "Compile Python"
       }
-    ]
+    ],
+    "menus": {
+			"editor/context": [
+				{
+					"command": "vscodeext.compileJava"
+				},
+        {
+					"command": "vscodeext.compileCpp"
+				},
+        {
+					"command": "vscodeext.compilePython"
+				}
+			]
+		}
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
