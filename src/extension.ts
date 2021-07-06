@@ -31,8 +31,11 @@ export function activate(context: vscode.ExtensionContext) {
 		// await NetUtil.login("test", "test").then(info => console.log(info))
 		NetUtil.test(text, 'java')
 			.then(retData => {
-				console.log(retData.data)
-				vscode.window.showInformationMessage(retData.data);
+				if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
+				else{
+					console.log(retData.data)
+					vscode.window.showInformationMessage(retData.data);
+				}
 			})
 			.catch(err => console.error(err))
 	})
@@ -46,8 +49,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 		NetUtil.test(text, 'cpp')
 			.then(retData => {
-				console.log(retData.data)
-				vscode.window.showInformationMessage(retData.data);
+				if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
+				else{
+					console.log(retData.data)
+					vscode.window.showInformationMessage(retData.data);
+				}
 			})
 			.catch(err => console.error(err))
 	})
@@ -61,8 +67,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 		NetUtil.test(text, 'python')
 			.then(retData => {
-				console.log(retData.data)
-				vscode.window.showInformationMessage(retData.data);
+				if(retData.returnCode != 1) vscode.window.showErrorMessage(retData.returnMessage);
+				else{
+					console.log(retData.data)
+					vscode.window.showInformationMessage(retData.data);
+				}
 			})
 			.catch(err => console.error(err))
 	})
