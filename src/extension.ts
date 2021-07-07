@@ -29,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const text = editor?.document.getText()
 		console.log(text)
 		// await NetUtil.login("test", "test").then(info => console.log(info))
-		NetUtil.test(text, 'java')
+		NetUtil.compile(text, 'java')
 			.then(retData => {
 				if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
 				else{
@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const text = editor?.document.getText()
 		console.log(text)
 
-		NetUtil.test(text, 'cpp')
+		NetUtil.compile(text, 'cpp')
 			.then(retData => {
 				if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
 				else{
@@ -65,7 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const text = editor?.document.getText()
 		console.log(text)
 
-		NetUtil.test(text, 'python')
+		NetUtil.compile(text, 'python')
 			.then(retData => {
 				if(retData.returnCode != 1) vscode.window.showErrorMessage(retData.returnMessage);
 				else{

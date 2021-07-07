@@ -3,7 +3,7 @@ import { URLSearchParams } from 'url'
 import Configs from '../constants/Configs'
 
 const NetUtil = {
-    test: (code, type) => {
+    compile: (code, type) => {
         return new Promise(async (resolve, reject) => {
             console.log(Configs.API_TEST)
             let params = new URLSearchParams()
@@ -12,12 +12,8 @@ const NetUtil = {
             console.log(params)
             axios
                 .post(Configs.API_TEST, params)
-                .then(res => {
-                    resolve(res.data)
-                })
-                .catch(err => {
-                    reject(new Error(err))
-                })
+                .then(res => resolve(res.data))
+                .catch(err => reject(err))
         })
     },
     login: (email, pw) => {
@@ -28,12 +24,8 @@ const NetUtil = {
             params.append('pwd', pw)
             axios
                 .post(Configs.API_POST_LOGIN, params)
-                .then(res => {
-                    resolve(res.data)
-                })
-                .catch(err => {
-                    reject(new Error(err))
-                })
+                .then(res => resolve(res.data))
+                .catch(err => reject(err))
         })
     },
     getBoard: id => {
