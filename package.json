@@ -13,7 +13,8 @@
     "onCommand:vscodeext.helloWorld",
     "onCommand:vscodeext.compileJava",
     "onCommand:vscodeext.compileCpp",
-    "onCommand:vscodeext.compilePython"
+    "onCommand:vscodeext.compilePython",
+    "onCommand:vscodeext.recommendation"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -24,15 +25,23 @@
       },
       {
         "command": "vscodeext.compileJava",
-        "title": "Compile java"
+        "title": "Compile java",
+        "category": "Compile"
       },
       {
         "command": "vscodeext.compileCpp",
-        "title": "Compile C++"
+        "title": "Compile C++",
+        "category": "Compile"
       },
       {
         "command": "vscodeext.compilePython",
-        "title": "Compile Python"
+        "title": "Compile Python",
+        "category": "Compile"
+      },
+      {
+        "command": "vscodeext.recommendation",
+        "title": "문제은행 추천받기",
+        "category": "문제은행"
       }
     ],
     "menus": {
@@ -45,6 +54,9 @@
 				},
         {
 					"command": "vscodeext.compilePython"
+				},
+        {
+					"command": "vscodeext.recommendation"
 				}
 			]
 		}

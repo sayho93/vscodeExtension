@@ -1,80 +1,163 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import NetUtil from './api/NetUtil';
 import Utils from './utils/utils';
 
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	let currentPanel: vscode.WebviewPanel | undefined = undefined;
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('vscodeext.helloWorld', async () => {
+			vscode.window.showInformationMessage('Plugin Activated');
+		}),
+		vscode.commands.registerCommand('vscodeext.compileJava', async () => {
+			vscode.window.showInformationMessage('Compiling Java...');
+			const editor = vscode.window.activeTextEditor
+			const text = editor?.document.getText()
+			console.log(text)
+
+			NetUtil.compile(text, 'java')
+				.then(retData => {
+					if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
+					else{
+						console.log(retData.data)
+						vscode.window.showInformationMessage(retData.data);
+					}
+				})
+				.catch(err => console.error(err))
+		}),
+		vscode.commands.registerCommand('vscodeext.compileCpp', async () => {
+			vscode.window.showInformationMessage('Compiling C++...');
+			const editor = vscode.window.activeTextEditor
+			const text = editor?.document.getText()
+			console.log(text)
+
+			NetUtil.compile(text, 'cpp')
+				.then(retData => {
+					if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
+					else{
+						console.log(retData.data)
+						vscode.window.showInformationMessage(retData.data);
+					}
+				})
+				.catch(err => console.error(err))
+		}),
+		vscode.commands.registerCommand('vscodeext.compilePython', () => {
+			vscode.window.showInformationMessage('Compiling Python...');
+			const editor = vscode.window.activeTextEditor
+			const text = editor?.document.getText()
+			console.log(text)
 	
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscodeext" is now active!');
+			NetUtil.compile(text, 'python')
+				.then(retData => {
+					if(retData.returnCode != 1) vscode.window.showErrorMessage(retData.returnMessage);
+					else{
+						console.log(retData.data)
+						vscode.window.showInformationMessage(retData.data);
+					}
+				})
+				.catch(err => console.error(err))
+		}),
+		vscode.commands.registerCommand('vscodeext.recommendation', () => {
+			const columnToShowIn = vscode.window.activeTextEditor
+				? vscode.window.activeTextEditor.viewColumn
+				: vscode.ViewColumn.One
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscodeext.helloWorld', async () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from vscodeExt!');
-	});
-	context.subscriptions.push(disposable);
+			if (currentPanel) currentPanel.reveal(columnToShowIn);
+			else{
+				currentPanel = vscode.window.createWebviewPanel(
+					`TEST`,
+					`Recommendation`,
+					vscode.ViewColumn.One,
+					{
+						// Enable scripts in the webview
+						enableScripts: true
+					  }
+				)
+			}
+			currentPanel.webview.html = getWebViewContent()
 
-	let compileJava = vscode.commands.registerCommand('vscodeext.compileJava', async () => {
-		vscode.window.showInformationMessage('Compiling Java...');
-		const editor = vscode.window.activeTextEditor
-		const text = editor?.document.getText()
-		console.log(text)
-		// await NetUtil.login("test", "test").then(info => console.log(info))
-		NetUtil.compile(text, 'java')
-			.then(retData => {
-				if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
-				else{
-					console.log(retData.data)
-					vscode.window.showInformationMessage(retData.data);
+			// Reset when the current panel is closed
+			currentPanel.onDidDispose(
+				() => {
+				  currentPanel = undefined;
+				},
+				null,
+				context.subscriptions
+			  );
+		}),
+	)
+}
+
+const getWebViewContent = () => {
+	return (`
+	<!DOCTYPE html>
+<html lang="ko">
+	<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+		
+		<script src="https://pagecdn.io/lib/ace/1.4.12/ace.min.js" crossorigin="anonymous" integrity="sha256-T5QdmsCQO5z8tBAXMrCZ4f3RX8wVdiA0Fu17FGnU1vU=" ></script>
+		<script src="https://pagecdn.io/lib/ace/1.4.12/theme-monokai.min.js" crossorigin="anonymous"  ></script>
+		<script src="https://pagecdn.io/lib/ace/1.4.12/mode-python.min.js" crossorigin="anonymous"  ></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-java.min.js" integrity="sha512-cBlD1MiRruu3tqWXrtxq3TrDDGF5NWpUQftHE6kS412z04C/nfl6DPMAJi2UJ70+X3eaCjiUdw7m1SaWPytZ2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-c_cpp.min.js" integrity="sha512-0OZmNbvdTUAXjS/gE+K7ytccKZGonVz82m6zzAZ5kbByRTC0WlO2BL3BjSvpzn4mCnpr3gFSRmqUVPrzJLVEwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <title>Cat Coding</title>
+    </head>
+
+    <script>
+        $(() => {
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.session.setMode("ace/mode/java");
+        })
+        
+    </script>
+	<style type="text/css" media="screen">
+    	#editor { 
+			position: relative;
+			width: 100%;
+    		height: 400px;
+		}
+	</style>
+    
+    <body>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h3>titletitletitletitletitletitletitle</h3>
+                <div id="editor">
+				class Main {
+					public static void main(String... args){
+						System.out.println("Minimum Integer : " + Integer.MIN_VALUE);
+						System.out.println("Maximum Integer : " + Integer.MAX_VALUE);
+				
+						System.out.println("Minimum long : " + Long.MIN_VALUE);
+						System.out.println("Maximum long : " + Long.MAX_VALUE);
+				
+						System.out.println("Minimum float : " + Float.MIN_VALUE);
+						System.out.println("Maximum float : " + Float.MAX_VALUE);
+				
+						System.out.println("Minimum double : " + Double.MIN_VALUE);
+						System.out.println("Maximum double : " + Double.MAX_VALUE);
+						System.out.println("Not A Number : " + Double.NaN);
+					}
 				}
-			})
-			.catch(err => console.error(err))
-	})
-	context.subscriptions.push(compileJava);
-
-	let compileCpp = vscode.commands.registerCommand('vscodeext.compileCpp', async () => {
-		vscode.window.showInformationMessage('Compiling C++...');
-		const editor = vscode.window.activeTextEditor
-		const text = editor?.document.getText()
-		console.log(text)
-
-		NetUtil.compile(text, 'cpp')
-			.then(retData => {
-				if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
-				else{
-					console.log(retData.data)
-					vscode.window.showInformationMessage(retData.data);
-				}
-			})
-			.catch(err => console.error(err))
-	})
-	context.subscriptions.push(compileCpp);
-
-	let compilePython = vscode.commands.registerCommand('vscodeext.compilePython', () => {
-		vscode.window.showInformationMessage('Compiling Python...');
-		const editor = vscode.window.activeTextEditor
-		const text = editor?.document.getText()
-		console.log(text)
-
-		NetUtil.compile(text, 'python')
-			.then(retData => {
-				if(retData.returnCode != 1) vscode.window.showErrorMessage(retData.returnMessage);
-				else{
-					console.log(retData.data)
-					vscode.window.showInformationMessage(retData.data);
-				}
-			})
-			.catch(err => console.error(err))
-	})
+				</div>
+            </li>
+            <li class="list-group-item">A second item</li>
+            <li class="list-group-item">A third item</li>
+            <li class="list-group-item">A fourth item</li>
+            <li class="list-group-item">And a fifth one</li>
+        </ul>
+        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
+    </body>
+</html>				
+	`)
 }
 
 // this method is called when your extension is deactivated
