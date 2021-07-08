@@ -77,6 +77,19 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 			currentPanel.webview.html = getWebViewContent()
 
+			currentPanel.webview.onDidReceiveMessage(
+				message => {
+				  switch (message.command) {
+					case 'alert':
+						console.log(message.text)
+					  	vscode.window.showInformationMessage(message.text);
+					  	return;
+				  }
+				},
+				undefined,
+				context.subscriptions
+			  );
+
 			// Reset when the current panel is closed
 			currentPanel.onDidDispose(
 				() => {
@@ -114,7 +127,23 @@ const getWebViewContent = () => {
         $(() => {
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/monokai");
-            editor.session.setMode("ace/mode/java");
+            // editor.session.setMode("ace/mode/java");
+			editor.session.setMode("ace/mode/c_cpp");
+			// editor.session.setMode("ace/mode/python");
+
+			const vscode = acquireVsCodeApi();
+			
+
+			$(".jSubmit").on("click", function(){
+				const code = editor.getValue()
+				console.log(code)
+				vscode.postMessage({
+					command: 'alert',
+					text: code
+				})
+			})
+
+			
         })
         
     </script>
@@ -131,23 +160,15 @@ const getWebViewContent = () => {
             <li class="list-group-item">
                 <h3>titletitletitletitletitletitletitle</h3>
                 <div id="editor">
-				class Main {
-					public static void main(String... args){
-						System.out.println("Minimum Integer : " + Integer.MIN_VALUE);
-						System.out.println("Maximum Integer : " + Integer.MAX_VALUE);
-				
-						System.out.println("Minimum long : " + Long.MIN_VALUE);
-						System.out.println("Maximum long : " + Long.MAX_VALUE);
-				
-						System.out.println("Minimum float : " + Float.MIN_VALUE);
-						System.out.println("Maximum float : " + Float.MAX_VALUE);
-				
-						System.out.println("Minimum double : " + Double.MIN_VALUE);
-						System.out.println("Maximum double : " + Double.MAX_VALUE);
-						System.out.println("Not A Number : " + Double.NaN);
-					}
-				}
+#include <stdio.h>
+
+int main() {
+    printf(":::::::::::\n");
+    return 0;
+}
+
 				</div>
+				<button class="btn btn-primary jSubmit">Submit</button>
             </li>
             <li class="list-group-item">A second item</li>
             <li class="list-group-item">A third item</li>
