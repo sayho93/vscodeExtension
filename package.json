@@ -40,8 +40,8 @@
       },
       {
         "command": "vscodeext.recommendation",
-        "title": "문제은행 추천받기",
-        "category": "문제은행"
+        "title": "문제은행",
+        "category": "Exercise"
       }
     ],
     "menus": {

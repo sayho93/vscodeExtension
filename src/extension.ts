@@ -1,16 +1,14 @@
 import * as vscode from 'vscode';
 import NetUtil from './api/NetUtil';
-import Utils from './utils/utils';
-
 
 export function activate(context: vscode.ExtensionContext) {
 	let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vscodeext.helloWorld', async () => {
+		vscode.commands.registerCommand('vscodeext.helloWorld', () => {
 			vscode.window.showInformationMessage('Plugin Activated');
 		}),
-		vscode.commands.registerCommand('vscodeext.compileJava', async () => {
+		vscode.commands.registerCommand('vscodeext.compileJava', () => {
 			vscode.window.showInformationMessage('Compiling Java...');
 			const editor = vscode.window.activeTextEditor
 			const text = editor?.document.getText()
@@ -26,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 				})
 				.catch(err => console.error(err))
 		}),
-		vscode.commands.registerCommand('vscodeext.compileCpp', async () => {
+		vscode.commands.registerCommand('vscodeext.compileCpp', () => {
 			vscode.window.showInformationMessage('Compiling C++...');
 			const editor = vscode.window.activeTextEditor
 			const text = editor?.document.getText()
@@ -67,7 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
 			else{
 				currentPanel = vscode.window.createWebviewPanel(
 					`TEST`,
-					`Recommendation`,
+					`문제은행`,
 					vscode.ViewColumn.One,
 					{
 						// Enable scripts in the webview
