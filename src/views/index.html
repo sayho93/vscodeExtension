@@ -104,9 +104,10 @@
 			$(".jSubmit").on("click", function(){
 				const code = editor.getValue()
 				console.log(code)
-				vscode.postMessage({
-					command: 'alert',
-					text: code
+                vscode.postMessage({
+					command: 'judge',
+					code: code,
+                    type: $(".jInfo").attr("lType")
 				})
 			})
 
@@ -125,6 +126,7 @@
 
                 editor.session.setMode(`ace/mode/${language.val()}`)
                 
+                $(".jInfo").attr("lType", language.val())
                 $(".jInfo").html(`${title} | Language: ${language.text()}`)
                 $(".jCodeArea").fadeIn()
             })
@@ -161,7 +163,7 @@
         .jCodeArea {
             position: fixed;
             bottom: 0;
-            width: 1000px;
+            /* width: 1000px; */
             margin: 5% auto;
             left: 0;
             right: 0;
@@ -232,12 +234,12 @@
                 <li class="list-group-item">And a fifth one</li> -->
             </ul>
             
-            <div class="row jCodeArea" style="display: none; justify-content: center; align-items: center; z-index: 999;">
+            <div class="row jCodeArea" style="display: none; justify-content: center; z-index: 999;">
                 <span class="badge bg-danger w-50 jInfo"></span>
                 <div id="editor"></div>
-                <div class="btn-group mt-2 w-25" role="group" aria-label="Basic example">
-                    <button class="btn btn-primary jSubmit">Submit</button>
-                    <button class="btn btn-danger jCancel">Cancel</button>
+                <div class="btn-group w-25">
+                    <button class="btn btn-danger mt-2 jSubmit">Submit</button>
+                    <button class="btn btn-secondary mt-2 jCancel">Cancel</button>
                 </div>
             </div>
         </body>
