@@ -1,6 +1,10 @@
 class Configs {
-    API_COMPILE = 'http://193.122.100.94:5000/api/compile'
-    // API_COMPILE = 'http://localhost:5000/api/compile'
+    // BASE_URL = 'http://193.122.100.94:5000/api'
+    BASE_URL = 'http://localhost:5000/api'
+    API_COMPILE = this.BASE_URL + '/compile'
+    API_GET_CATEGORYLIST = this.BASE_URL + '/category'
+    API_GET_PROBLEMLIST = this.BASE_URL + '/problem'
+
 
     API_UPLOAD_FILE_NOBASE = 'route.php?F=Routable.uploadFile.raw'
     APP_ID = 23

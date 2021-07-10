@@ -16,6 +16,31 @@ const NetUtil = {
                 .catch(err => reject(err))
         })
     },
+    getCategory: () => {
+        return new Promise((resolve, reject) => {
+            console.log(`${Configs.API_GET_CATEGORYLIST}`)
+            axios
+                .get(Configs.API_GET_CATEGORYLIST)
+                .then(res => {
+                    console.log(res)
+                    if(res.data.returnCode !== 1) reject(res.returnMessage)
+                    else resolve(res.data)
+                })
+                .catch(err => reject(err))
+        })
+    },
+    getProblem: id => {
+        return new Promise((resolve, reject) => {
+            console.log(`${Configs.API_GET_PROBLEMLIST}/${id}`)
+            axios
+                .get(`${Configs.API_GET_PROBLEMLIST}/${id}`)
+                .then(res => {
+                    if(res.data.returnCode !== 1) reject(res.returnMessage)
+                    else resolve(res.data)
+                })
+                .catch(err => reject(err))
+        })
+    },
     login: (email, pw) => {
         return new Promise((resolve, reject) => {
             console.log(Configs.API_POST_LOGIN)
@@ -26,32 +51,6 @@ const NetUtil = {
                 .post(Configs.API_POST_LOGIN, params)
                 .then(res => resolve(res.data))
                 .catch(err => reject(err))
-        })
-    },
-    getBoard: id => {
-        return new Promise((resolve, reject) => {
-            console.log(`${Configs.API_GET_BOARD}${id}`)
-            axios
-                .get(`${Configs.API_GET_BOARD}${id}`)
-                .then(res => {
-                    resolve(res.data)
-                })
-                .catch(err => {
-                    reject(new Error(err))
-                })
-        })
-    },
-    getCharacters: () => {
-        return new Promise((resolve, reject) => {
-            console.log(`${Configs.API_GET_CHARLIST}`)
-            axios
-                .get(`${Configs.API_GET_CHARLIST}`)
-                .then(res => {
-                    resolve(res.data)
-                })
-                .catch(err => {
-                    reject(new Error(err))
-                })
         })
     },
 }

@@ -19,48 +19,227 @@
 
     <script>
         $(() => {
-            var editor = ace.edit("editor");
-            editor.setTheme("ace/theme/monokai");
-            editor.session.setMode("ace/mode/java");
+            const vscode = acquireVsCodeApi()
+            let categoryList = null
+            let currentPid = 0
+
+            vscode.postMessage({
+				command: 'getCategory',
+			})
+
+            window.addEventListener('message', function(event){
+                const message = event.data
+
+                switch (message.command) {
+                    case 'categoryList':
+                        categoryList = message.data
+                        categoryList.forEach((item) => {
+                            $(".jListGroup").append(`
+                                <li class="list-group-item jCollapse" data-bs-toggle="collapse" href="#content${item.id}" no="${item.id}">
+                                        <h5>${item.id}. ${item.desc}</h5>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16" style="float: right">
+                                           <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                        </svg>
+                                </li>
+                                <div class="collapse jPListGroup" id="content${item.id}"></div>
+                            `)
+                        })
+                        break
+                    case 'problemList':
+                        problemList = message.data
+                        problemList.forEach((item) => {
+                            $(`#content${item.categoryId}`).append(`
+                                <div class="card">
+                                    <div class="card-body background border">
+                                        <span>
+                                            ${item.title}
+                                        </span>
+                                        <hr/>
+                                        <span>
+                                            ${item.content}
+                                        </span>
+                                        <span class="badge bg-warning">${item.successRate}</span>
+                                        <hr/>
+                                        <h6>Input Value</h6>
+                                        <p>
+                                            ${item.inputValue}
+                                        </p>
+
+                                        <div class="mt-2" style="flex-direction: row">
+                                            <div class="input-group mb-3 w-25">
+                                                <select class="form-select form-control" id="jLang${item.id}">
+                                                    <option value="error" selected>Language</option>
+                                                    <option value="java">Java</option>
+                                                    <option value="python">Python</option>
+                                                    <option value="c_cpp">C/C++</option>
+                                                </select>
+                                                <button class="btn btn-danger jShow" no="${item.id}" title="${item.title}" lType="">풀기</button>    
+                                            </div>
+                                            
+                                            
+                                            <div style="float: right;">
+                                                <b>
+                                                    ${item.regDate}
+                                                </b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `)
+                        })
+                        break
+                    default:
+                        break
+                }
+            })
+
+            var editor = ace.edit("editor")
+            editor.setFontSize(13)
+            editor.setTheme("ace/theme/monokai")
+
+
+            $("#editor").css('width', window.innerWidth)
+			
+
+			$(".jSubmit").on("click", function(){
+				const code = editor.getValue()
+				console.log(code)
+				vscode.postMessage({
+					command: 'alert',
+					text: code
+				})
+			})
+
+            $(document).on("click", ".jShow", function(){
+                currentPid = $(this).attr("no")
+                const title = $(this).attr("title")
+                const language = $(`#jLang${currentPid} option:selected`)
+
+                if(language.val() == 'error'){
+                    vscode.postMessage({
+                        command: 'error',
+                        text: 'Please select programming language :('
+				    })
+                    return
+                }
+
+                editor.session.setMode(`ace/mode/${language.val()}`)
+                
+                $(".jInfo").html(`${title} | Language: ${language.text()}`)
+                $(".jCodeArea").fadeIn()
+            })
+
+            $(".jCancel").on("click", function(){
+                $(".jCodeArea").fadeOut()
+            })
+
+            $(document).on("click", ".jCollapse", function(event){
+                event.preventDefault()
+                const id = $(this).attr("no")
+
+                console.log(JSON.stringify($(`#content${id}`).html()))
+                if($(this).hasClass("collapsed")) $(".jCodeArea").fadeOut()
+                else{
+                    if($(`#content${id}`).html() == ""){
+                        console.log(id)
+                        vscode.postMessage({
+                            command: 'getProblem',
+                            id: id
+                        })
+                    }
+                }
+            })			
         })
         
     </script>
 	<style type="text/css" media="screen">
+        body {
+            background-color: #282C34;
+            color: #FFFFFF;
+        }
+
+        .jCodeArea {
+            position: fixed;
+            bottom: 0;
+            width: 1000px;
+            margin: 5% auto;
+            left: 0;
+            right: 0;
+            /* margin-left: -250px; */
+        }
+
     	#editor { 
 			position: relative;
-			width: 100%;
+            width: 100%;
     		height: 400px;
+            border-radius: 25px;
 		}
+
+        .background {
+            background-color: #282C34;
+            color: #FFFFFF;
+        }
+
+        .border {
+            border: 1px solid #737373;
+        }
 	</style>
     
     <body>
-        <ul class="list-group">
-            <li class="list-group-item">
-                <h3>titletitletitletitletitletitletitle</h3>
-                <div id="editor">
-				class Main {
-					public static void main(String... args){
-						System.out.println("Minimum Integer : " + Integer.MIN_VALUE);
-						System.out.println("Maximum Integer : " + Integer.MAX_VALUE);
-				
-						System.out.println("Minimum long : " + Long.MIN_VALUE);
-						System.out.println("Maximum long : " + Long.MAX_VALUE);
-				
-						System.out.println("Minimum float : " + Float.MIN_VALUE);
-						System.out.println("Maximum float : " + Float.MAX_VALUE);
-				
-						System.out.println("Minimum double : " + Double.MIN_VALUE);
-						System.out.println("Maximum double : " + Double.MAX_VALUE);
-						System.out.println("Not A Number : " + Double.NaN);
-					}
-				}
-				</div>
-            </li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
-        </ul>
-        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
-    </body>
-</html>
+        <div class="jTemplate" style="display: none;">
+            
+        </div>
+
+        <div class="container background">
+            <ul class="list-group jListGroup">
+
+                <!-- <li class="list-group-item background border jCollapse" data-bs-toggle="collapse" href="#content1">
+                    <h5>쉬워 보이지만 한 번에 맞히기 어려운 문제</h5>
+                </li>
+                <div class="collapse" id="content1">
+                    <div class="card">
+                        <div class="card-body background border">
+                            <span>
+                                직각삼각형에서 피타고라스 정리는 매우 유명한 이론이다.
+                            즉, 직각삼각형의 변 A, B, C(=빗변)가 있을때 다음 식이 성립한다.
+                            A2 + B2 = C2
+                            우리는 빗변을 제외한 한 변의 길이를 알때 직각 삼각형이 되는 삼각형의 개수를 구하려고한다.
+                            예를 들어, A=3인 삼각형은 32 + 42 = 52 으로 식이 성립하는 삼각형의 경우는 단 1개 이다.
+                            또, A=12이면, 122 + 162 = 202 , 122 + 352 = 372 으로 식이 성립하는 삼각형의 경우는 2개이다.
+                            삼각형의 한 변 정수 A가 주어질때, 빗변 C가 정수가 되는 B > A인 직각 삼각형의 개수를 구하시오.(A,B,C 모두 정수임)
+                            </span>
+                            <span class="badge bg-warning">20.9%</span>
+
+                            <p>
+                                1.414213
+                            </p>
+
+                            
+                            <div class="mt-2">
+                                <button class="btn btn-dark jShow" no="39">풀기</button>    
+                                <div style="float: right;">
+                                    <b>
+                                        2021-07-09 17:35:22
+                                    </b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- <li class="list-group-item">A third item</li>
+                <li class="list-group-item">A fourth item</li>
+                <li class="list-group-item">And a fifth one</li> -->
+            </ul>
+            
+            <div class="row jCodeArea" style="display: none; justify-content: center; align-items: center; z-index: 999;">
+                <span class="badge bg-danger w-50 jInfo"></span>
+                <div id="editor"></div>
+                <div class="btn-group mt-2 w-25" role="group" aria-label="Basic example">
+                    <button class="btn btn-primary jSubmit">Submit</button>
+                    <button class="btn btn-danger jCancel">Cancel</button>
+                </div>
+            </div>
+        </body>
+        </div>
+</html>				
