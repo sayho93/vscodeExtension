@@ -163,16 +163,14 @@
         .jCodeArea {
             position: fixed;
             bottom: 0;
-            /* width: 1000px; */
             margin: 5% auto;
             left: 0;
             right: 0;
-            /* margin-left: -250px; */
         }
 
     	#editor { 
 			position: relative;
-            width: 100%;
+            /* width: 100%; */
     		height: 400px;
             border-radius: 25px;
 		}
@@ -188,60 +186,16 @@
 	</style>
     
     <body>
-        <div class="jTemplate" style="display: none;">
-            
-        </div>
-
         <div class="container background">
-            <ul class="list-group jListGroup">
+            <ul class="list-group jListGroup"></ul>
 
-                <!-- <li class="list-group-item background border jCollapse" data-bs-toggle="collapse" href="#content1">
-                    <h5>쉬워 보이지만 한 번에 맞히기 어려운 문제</h5>
-                </li>
-                <div class="collapse" id="content1">
-                    <div class="card">
-                        <div class="card-body background border">
-                            <span>
-                                직각삼각형에서 피타고라스 정리는 매우 유명한 이론이다.
-                            즉, 직각삼각형의 변 A, B, C(=빗변)가 있을때 다음 식이 성립한다.
-                            A2 + B2 = C2
-                            우리는 빗변을 제외한 한 변의 길이를 알때 직각 삼각형이 되는 삼각형의 개수를 구하려고한다.
-                            예를 들어, A=3인 삼각형은 32 + 42 = 52 으로 식이 성립하는 삼각형의 경우는 단 1개 이다.
-                            또, A=12이면, 122 + 162 = 202 , 122 + 352 = 372 으로 식이 성립하는 삼각형의 경우는 2개이다.
-                            삼각형의 한 변 정수 A가 주어질때, 빗변 C가 정수가 되는 B > A인 직각 삼각형의 개수를 구하시오.(A,B,C 모두 정수임)
-                            </span>
-                            <span class="badge bg-warning">20.9%</span>
-
-                            <p>
-                                1.414213
-                            </p>
-
-                            
-                            <div class="mt-2">
-                                <button class="btn btn-dark jShow" no="39">풀기</button>    
-                                <div style="float: right;">
-                                    <b>
-                                        2021-07-09 17:35:22
-                                    </b>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
-                <!-- <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li> -->
-            </ul>
-            
-            <div class="row jCodeArea" style="display: none; justify-content: center; z-index: 999;">
+            <div class="row jCodeArea mb-2" style="display: none; justify-content: center; z-index: 999;">
                 <span class="badge bg-danger w-50 jInfo"></span>
-                <div id="editor"></div>
-                <div class="btn-group w-25">
+                <div class="w-75" id="editor"></div>
+                <div class="btn-group w-50">
                     <button class="btn btn-danger mt-2 jSubmit">Submit</button>
-                    <button class="btn btn-secondary mt-2 jCancel">Cancel</button>
+                    <button class="btn btn-light mt-2 jCancel">Cancel</button>
                 </div>
             </div>
-        </body>
-        </div>
+    </body>
 </html>				
