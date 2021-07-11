@@ -7,7 +7,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-		
 		<script src="https://pagecdn.io/lib/ace/1.4.12/ace.min.js" crossorigin="anonymous" integrity="sha256-T5QdmsCQO5z8tBAXMrCZ4f3RX8wVdiA0Fu17FGnU1vU=" ></script>
 		<script src="https://pagecdn.io/lib/ace/1.4.12/theme-monokai.min.js" crossorigin="anonymous"  ></script>
 		<script src="https://pagecdn.io/lib/ace/1.4.12/mode-python.min.js" crossorigin="anonymous"  ></script>
@@ -51,19 +50,13 @@
                             $(`#content${item.categoryId}`).append(`
                                 <div class="card">
                                     <div class="card-body background border">
-                                        <span>
-                                            ${item.title}
-                                        </span>
+                                        <span>${item.title}</span>
                                         <hr/>
-                                        <span>
-                                            ${item.content}
-                                        </span>
+                                        <span>${item.content}</span>
                                         <span class="badge bg-warning">${item.successRate}</span>
                                         <hr/>
                                         <h6>Input Value</h6>
-                                        <p>
-                                            ${item.inputValue}
-                                        </p>
+                                        <p>${item.inputValue}</p>
 
                                         <div class="mt-2" style="flex-direction: row">
                                             <div class="input-group mb-3 w-25">
@@ -76,12 +69,7 @@
                                                 <button class="btn btn-danger jShow" no="${item.id}" title="${item.title}" lType="">풀기</button>    
                                             </div>
                                             
-                                            
-                                            <div style="float: right;">
-                                                <b>
-                                                    ${item.regDate}
-                                                </b>
-                                            </div>
+                                            <div style="float: right;"><b>${item.regDate}</b></div>
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +95,8 @@
                 vscode.postMessage({
 					command: 'judge',
 					code: code,
-                    type: $(".jInfo").attr("lType")
+                    type: $(".jInfo").attr("lType"),
+                    problemId: currentPid
 				})
 			})
 
@@ -154,35 +143,19 @@
         })
         
     </script>
+
 	<style type="text/css" media="screen">
-        body {
-            background-color: #282C34;
-            color: #FFFFFF;
+        @font-face {
+            font-family: 'GongGothicMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
         }
-
-        .jCodeArea {
-            position: fixed;
-            bottom: 0;
-            margin: 5% auto;
-            left: 0;
-            right: 0;
-        }
-
-    	#editor { 
-			position: relative;
-            /* width: 100%; */
-    		height: 400px;
-            border-radius: 25px;
-		}
-
-        .background {
-            background-color: #282C34;
-            color: #FFFFFF;
-        }
-
-        .border {
-            border: 1px solid #737373;
-        }
+        body {background-color: #282C34; color: #FFFFFF; font-family: 'GongGothicMedium'}
+        .jCodeArea {position: fixed; bottom: 0; margin: 5% auto; left: 0; right: 0;}
+    	#editor { position: relative; height: 400px; border-radius: 25px;}
+        .background {background-color: #282C34; color: #FFFFFF;}
+        .border {border: 1px solid #737373;}
 	</style>
     
     <body>

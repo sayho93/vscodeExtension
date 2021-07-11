@@ -23,6 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 					else{
 						console.log(retData.data)
 						vscode.window.showInformationMessage(retData.data, {modal: true})
+						vscode.window.showInformationMessage(retData.data)
 					}
 				})
 				.catch(err => console.error(err))
@@ -40,6 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
 					else{
 						console.log(retData.data)
 						vscode.window.showInformationMessage(retData.data, {modal: true})
+						vscode.window.showInformationMessage(retData.data)
 					}
 				})
 				.catch(err => console.error(err))
@@ -57,6 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 					else{
 						console.log(retData.data)
 						vscode.window.showInformationMessage(retData.data, {modal: true})
+						vscode.window.showInformationMessage(retData.data)
 					}
 				})
 				.catch(err => console.error(err))
@@ -103,20 +106,21 @@ export function activate(context: vscode.ExtensionContext) {
 						} catch(err){console.log(err)}
 						break
 					case 'judge':
-						//TODO judge code
-						console.log(message.code)
-						console.log(message.type)
-						vscode.window.showInformationMessage(`${message.code} ::: ${message.type}`)
+						try{
+							const ret = await NetUtil.judge(message.code, message.type, message.problemId)
+							vscode.window.showInformationMessage(ret, {modal:true})
+						} catch(err){
+							vscode.window.showErrorMessage(err, {modal: true})
+						}
 						break
-					default:
-						break
+					default: break
 				  }
 				},
 				undefined,
 				context.subscriptions
 			 )
 
-			currentPanel.onDidDispose(() => {currentPanel = undefined},null,context.subscriptions)
+			currentPanel.onDidDispose(() => {currentPanel = currentPanel},null,context.subscriptions)
 		}),
 		vscode.commands.registerCommand('vscodeext.categoryList', async() => {
 			if(!currentPanel) return

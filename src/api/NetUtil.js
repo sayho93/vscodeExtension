@@ -13,7 +13,10 @@ const NetUtil = {
             console.log(params)
             axios
                 .post(Configs.API_COMPILE, params)
-                .then(res => resolve(res.data))
+                .then(res => {
+                    if(res.data.returnCode !== 1) reject(res.returnMessage)
+                    else resolve(res.data)
+                })
                 .catch(err => reject(err))
         })
     },
@@ -36,11 +39,30 @@ const NetUtil = {
             axios
                 .get(`${Configs.API_GET_PROBLEMLIST}/${id}`)
                 .then(res => {
-                    if(res.data.returnCode !== 1) reject(res.returnMessage)
+                    if(res.data.returnCode !== 1) reject(res.data)
                     else resolve(res.data)
                 })
                 .catch(err => reject(err))
         })
+    },
+    judge: (code, type, problemId) => {
+        return new Promise((resolve, reject) => {
+            console.log(`${Configs.API_POST_JUDGE}/${problemId}`)
+            const params = new URLSearchParams()
+            params.append('data', code)
+            params.append('type', type)
+            console.log(params)
+            axios
+                .post(`${Configs.API_POST_JUDGE}/${problemId}`, params)
+                .then(res => {
+                    const returnCode = res.data.returnCode
+                    if(returnCode === 1) resolve(res.data.returnMessage)
+                    if(returnCode === -1) reject(res.data.data)
+                    if(returnCode === -9) reject(res.data.returnMessage)
+                })
+                .catch(err => reject(err))
+        })
+
     },
     login: (email, pw) => {
         return new Promise((resolve, reject) => {
