@@ -1,6 +1,6 @@
 class Configs {
-    BASE_URL = 'http://193.122.100.94:5000/api'
-    // BASE_URL = 'http://localhost:5000/api'
+    // BASE_URL = 'http://193.122.100.94:5000/api'
+    BASE_URL = 'http://localhost:5000/api'
     API_COMPILE = this.BASE_URL + '/compile'
     API_GET_CATEGORYLIST = this.BASE_URL + '/category'
     API_GET_PROBLEMLIST = this.BASE_URL + '/problem'

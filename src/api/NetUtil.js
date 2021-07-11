@@ -3,12 +3,13 @@ import { URLSearchParams } from 'url'
 import Configs from '../constants/Configs'
 
 const NetUtil = {
-    compile: (code, type) => {
+    compile: (code, type, input) => {
         return new Promise((resolve, reject) => {
             console.log(Configs.API_COMPILE)
             let params = new URLSearchParams()
             params.append('data', code) 
             params.append('type', type)
+            params.append('input', input)
             console.log(params)
             axios
                 .post(Configs.API_COMPILE, params)

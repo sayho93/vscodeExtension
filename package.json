@@ -11,9 +11,9 @@
   ],
   "activationEvents": [
     "onCommand:vscodeext.helloWorld",
-    "onCommand:vscodeext.compileJava",
-    "onCommand:vscodeext.compileCpp",
-    "onCommand:vscodeext.compilePython",
+    "onCommand:vscodeext.runJava",
+    "onCommand:vscodeext.runCpp",
+    "onCommand:vscodeext.runPython",
     "onCommand:vscodeext.recommendation"
   ],
   "main": "./dist/extension.js",
@@ -24,19 +24,19 @@
         "title": "Hello World"
       },
       {
-        "command": "vscodeext.compileJava",
-        "title": "Compile java",
-        "category": "Compile"
+        "command": "vscodeext.runJava",
+        "title": "Run Java",
+        "category": "Run"
       },
       {
-        "command": "vscodeext.compileCpp",
-        "title": "Compile C++",
-        "category": "Compile"
+        "command": "vscodeext.runCpp",
+        "title": "Run C++",
+        "category": "Run"
       },
       {
-        "command": "vscodeext.compilePython",
-        "title": "Compile Python",
-        "category": "Compile"
+        "command": "vscodeext.runPython",
+        "title": "Run Python",
+        "category": "Run"
       },
       {
         "command": "vscodeext.recommendation",
@@ -47,13 +47,13 @@
     "menus": {
 			"editor/context": [
 				{
-					"command": "vscodeext.compileJava"
+					"command": "vscodeext.runJava"
 				},
         {
-					"command": "vscodeext.compileCpp"
+					"command": "vscodeext.runCpp"
 				},
         {
-					"command": "vscodeext.compilePython"
+					"command": "vscodeext.runPython"
 				},
         {
 					"command": "vscodeext.recommendation"

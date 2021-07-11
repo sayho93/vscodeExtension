@@ -10,50 +10,53 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('vscodeext.helloWorld', () => {
 			vscode.window.showInformationMessage('Plugin Activated')
 		}),
-		vscode.commands.registerCommand('vscodeext.compileJava', () => {
-			vscode.window.showInformationMessage('Compiling Java...')
+		vscode.commands.registerCommand('vscodeext.runJava', async () => {
+			const input = await vscode.window.showInputBox();
+			vscode.window.showInformationMessage('Running Java...')
 			const editor = vscode.window.activeTextEditor
 			const text = editor?.document.getText()
 			console.log(text)
 
-			NetUtil.compile(text, 'java')
+			NetUtil.compile(text, 'java', input)
 				.then(retData => {
 					if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
 					else{
 						console.log(retData.data)
-						vscode.window.showInformationMessage(retData.data)
+						vscode.window.showInformationMessage(retData.data, {modal: true})
 					}
 				})
 				.catch(err => console.error(err))
 		}),
-		vscode.commands.registerCommand('vscodeext.compileCpp', () => {
-			vscode.window.showInformationMessage('Compiling C++...')
+		vscode.commands.registerCommand('vscodeext.runCpp', async () => {
+			const input = await vscode.window.showInputBox();
+			vscode.window.showInformationMessage('Running C++...')
 			const editor = vscode.window.activeTextEditor
 			const text = editor?.document.getText()
 			console.log(text)
 
-			NetUtil.compile(text, 'cpp')
+			NetUtil.compile(text, 'cpp', input)
 				.then(retData => {
 					if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
 					else{
 						console.log(retData.data)
-						vscode.window.showInformationMessage(retData.data)
+						vscode.window.showInformationMessage(retData.data, {modal: true})
 					}
 				})
 				.catch(err => console.error(err))
 		}),
-		vscode.commands.registerCommand('vscodeext.compilePython', () => {
-			vscode.window.showInformationMessage('Compiling Python...')
+		vscode.commands.registerCommand('vscodeext.runPython', async () => {
+			const input = await vscode.window.showInputBox();
+			vscode.window.showInformationMessage('Running Python...')
 			const editor = vscode.window.activeTextEditor
 			const text = editor?.document.getText()
 			console.log(text)
 	
-			NetUtil.compile(text, 'python')
+			NetUtil.compile(text, 'python', input)
 				.then(retData => {
 					if(retData.returnCode != 1) vscode.window.showErrorMessage(retData.returnMessage)
 					else{
 						console.log(retData.data)
-						vscode.window.showInformationMessage(retData.data)
+						vscode.window.showInformationMessage(retData.data, {modal: true})
 					}
 				})
 				.catch(err => console.error(err))
@@ -83,11 +86,11 @@ export function activate(context: vscode.ExtensionContext) {
 				  switch (message.command) {
 					case 'alert':
 						console.log(message.text)
-					  	vscode.window.showInformationMessage(message.text)
+					  	vscode.window.showInformationMessage(message.text, {modal: true})
 					  	break
 					case 'error':
 						console.log(message.text)
-						vscode.window.showErrorMessage(message.text)
+						vscode.window.showErrorMessage(message.text, {modal: true})
 						break
 					case 'getCategory':
 						try{
@@ -113,13 +116,7 @@ export function activate(context: vscode.ExtensionContext) {
 				context.subscriptions
 			 )
 
-			currentPanel.onDidDispose(
-				() => {
-				  currentPanel = undefined
-				},
-				null,
-				context.subscriptions
-			  )
+			currentPanel.onDidDispose(() => {currentPanel = undefined},null,context.subscriptions)
 		}),
 		vscode.commands.registerCommand('vscodeext.categoryList', async() => {
 			if(!currentPanel) return
