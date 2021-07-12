@@ -19,7 +19,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 			NetUtil.compile(text, 'java', input)
 				.then(retData => {
-					if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
+					if(retData.returnCode !== 1) {
+						vscode.window.showErrorMessage(retData.returnMessage)
+						vscode.window.showErrorMessage(retData.data)
+					}
 					else{
 						console.log(retData.data)
 						vscode.window.showInformationMessage(retData.data, {modal: true})
@@ -37,7 +40,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 			NetUtil.compile(text, 'cpp', input)
 				.then(retData => {
-					if(retData.returnCode !== 1) vscode.window.showErrorMessage(retData.returnMessage)
+					if(retData.returnCode !== 1){
+						vscode.window.showErrorMessage(retData.returnMessage)
+						vscode.window.showErrorMessage(retData.data)
+					}
 					else{
 						console.log(retData.data)
 						vscode.window.showInformationMessage(retData.data, {modal: true})
@@ -55,7 +61,10 @@ export function activate(context: vscode.ExtensionContext) {
 	
 			NetUtil.compile(text, 'python', input)
 				.then(retData => {
-					if(retData.returnCode != 1) vscode.window.showErrorMessage(retData.returnMessage)
+					if(retData.returnCode != 1){
+						vscode.window.showErrorMessage(retData.data)
+						vscode.window.showErrorMessage(retData.data)
+					}
 					else{
 						console.log(retData.data)
 						vscode.window.showInformationMessage(retData.data, {modal: true})

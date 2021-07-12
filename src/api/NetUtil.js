@@ -13,10 +13,7 @@ const NetUtil = {
             console.log(params)
             axios
                 .post(Configs.API_COMPILE, params)
-                .then(res => {
-                    if(res.data.returnCode !== 1) reject(res.returnMessage)
-                    else resolve(res.data)
-                })
+                .then(res => resolve(res.data))
                 .catch(err => reject(err))
         })
     },
